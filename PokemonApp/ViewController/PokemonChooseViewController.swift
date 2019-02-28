@@ -26,74 +26,91 @@ class PokemonChooseViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //downloadPikachus(count: 15)
+        
         trainerImageView.image = image
+        updateLabel()
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        self.downloadPikachus(count: 15)
+        let completion: (Pokemon)->() = { (pokemon) in
+            self.pokemons.append(pokemon)
+            DispatchQueue.main.async { self.collectionView.reloadData() }
+        }
+        let service = PokemonService.shared
+        service.downloadPokemon(name: "charmander", completion: completion)
+        service.downloadPokemon(name: "charizard", completion: completion)
+        service.downloadPokemon(name: "blastoise", completion: completion)
+        service.downloadPokemon(name: "snorlax", completion: completion)
+        service.downloadPokemon(name: "jigglypuff", completion: completion)
+        service.downloadPokemon(name: "mewtwo", completion: completion)
     }
     
     func downloadPikachus(count: Int) {
-        let urlString = "https://pokeapi.co/api/v2/pokemon/pikachu"
+        let completion: (Pokemon)->() = { (pokemon) in
+            // add it into our pokemons
+            self.pokemons.append(pokemon)
+            
+            // dispatch work asynchronously to the main thread
+            // UIKit must be done on the main thread
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+            // print("Did download Pokemon! Count: \(self.pokemons.count)")
+        }
+        
         for _ in 0..<count {
-            guard let url = URL(string: urlString) else {
-                // throw an error about invalid URL
-                return
-            }
-            
-            var request = URLRequest(url: url,
-                                     cachePolicy: .returnCacheDataElseLoad,
-                                     timeoutInterval: 10.0)
-            request.httpMethod = "GET"
-            let config = URLSessionConfiguration.default
-            config.allowsCellularAccess = false
-            config.requestCachePolicy = .returnCacheDataElseLoad
-            let session = URLSession.init(configuration: config)
-            
-            // option 2:
-            // let sess = URLSession.shared
-            
-            // actual downloading/uploading task
-            let dataTask = session.dataTask(with: request)
-            { (data, response, error) in
-                if let dat = data {
-                    // parse the data
-                    let decoder = JSONDecoder()
-                    do {
-                        // make a pokemon
-                        let pokemon = try decoder.decode(Pokemon.self, from: dat)
-                        
-                        self.downloadPicture(for: pokemon)
-                    }
-                    catch {
-                        // error, something
-                    }
-                }
-            }
-            dataTask.resume()
+            PokemonService.shared.downloadPokemon(name: "pikachu",
+                                                  completion: completion)
         }
     }
     
-    func downloadPicture(for pokemon: Pokemon) {
-        guard let url = URL(string: pokemon.sprites.front_shiny) else {
-            // error here
-            return
-        }
-        URLSession.shared.dataTask(with: url) { (data, _, _) in
-            pokemon.image = data
-            
-            // add it into our pokemons
-            self.pokemons.append(pokemon)
-            print("Did download Pokemon! Count: \(self.pokemons.count)")
-        }.resume()
+    func updateLabel() {
+        catchCounterLabel.text = "Pokemon Caught: " + String(catchCounter)
     }
+    
 }
 
 extension PokemonChooseViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // catch the pokemon
+    func collectionView(_ collectionView: UICollectionView,
+                        didSelectItemAt indexPath: IndexPath) {
+        // catch the pokemon:
+        // remove pokemon from array
+        let index = indexPath.row
+        pokemons.remove(at: index)
+        
+        // update counter
+        catchCounter += 1
+        
+        // update label
+        updateLabel()
+        
+        // reload collectionView
+        collectionView.reloadData()
     }
     
+}
+
+extension PokemonChooseViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        // width & height
+        // CG = Core Graphics
+        if let pokemonImage = pokemons[indexPath.row].image {
+            let image = UIImage(data: pokemonImage)!
+            
+            let size = CGSize(width: image.size.width,
+                              height: image.size.height + 30.0)
+            return size
+        }
+        let width = collectionView.frame.size.width / 3.0
+        let height = width + 30.0
+        let size = CGSize(width: width, height: height)
+        return size
+    }
 }
 
 extension PokemonChooseViewController: UICollectionViewDataSource {
@@ -107,7 +124,18 @@ extension PokemonChooseViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return UICollectionViewCell()
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell",
+                                                      for: indexPath) as! PokemonCollectionViewCell
+        let pokemon = pokemons[indexPath.row]
+        if let imageData = pokemon.image {
+            let image = UIImage(data: imageData)
+            cell.imageView.image = image
+        }
+        else {
+            cell.imageView.image = nil
+        }
+        cell.label.text = pokemon.name
+        return cell
     }
     
 }

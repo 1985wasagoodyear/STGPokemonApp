@@ -10,6 +10,8 @@
 		3FDC4E4E22282C8D009EE2F2 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDC4E4D22282C8D009EE2F2 /* Protocols.swift */; };
 		3FDC4E5022282E63009EE2F2 /* PokemonChooseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDC4E4F22282E63009EE2F2 /* PokemonChooseViewController.swift */; };
 		3FDC4E5322283266009EE2F2 /* Pokemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDC4E5222283266009EE2F2 /* Pokemon.swift */; };
+		3FDC4E5622283D24009EE2F2 /* PokemonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDC4E5522283D24009EE2F2 /* PokemonCollectionViewCell.swift */; };
+		3FDC4E5922284D5F009EE2F2 /* PokemonService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDC4E5822284D5F009EE2F2 /* PokemonService.swift */; };
 		3FE407B42226F4B20065C723 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE407B32226F4B20065C723 /* AppDelegate.swift */; };
 		3FE407B62226F4B20065C723 /* TrainerSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE407B52226F4B20065C723 /* TrainerSelectViewController.swift */; };
 		3FE407B92226F4B20065C723 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FE407B72226F4B20065C723 /* Main.storyboard */; };
@@ -22,6 +24,8 @@
 		3FDC4E4D22282C8D009EE2F2 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		3FDC4E4F22282E63009EE2F2 /* PokemonChooseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonChooseViewController.swift; sourceTree = "<group>"; };
 		3FDC4E5222283266009EE2F2 /* Pokemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pokemon.swift; sourceTree = "<group>"; };
+		3FDC4E5522283D24009EE2F2 /* PokemonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonCollectionViewCell.swift; sourceTree = "<group>"; };
+		3FDC4E5822284D5F009EE2F2 /* PokemonService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonService.swift; sourceTree = "<group>"; };
 		3FE407B02226F4B20065C723 /* PokemonApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokemonApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FE407B32226F4B20065C723 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3FE407B52226F4B20065C723 /* TrainerSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainerSelectViewController.swift; sourceTree = "<group>"; };
@@ -59,6 +63,22 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		3FDC4E5422283D0E009EE2F2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3FDC4E5522283D24009EE2F2 /* PokemonCollectionViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		3FDC4E5722284D50009EE2F2 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				3FDC4E5822284D5F009EE2F2 /* PokemonService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		3FE407A72226F4B20065C723 = {
 			isa = PBXGroup;
 			children = (
@@ -78,10 +98,12 @@
 		3FE407B22226F4B20065C723 /* PokemonApp */ = {
 			isa = PBXGroup;
 			children = (
-				3FDC4E512228325E009EE2F2 /* Model */,
+				3FDC4E5722284D50009EE2F2 /* Services */,
 				3FDC4E4C22282C7C009EE2F2 /* Protocols */,
-				3FE407B32226F4B20065C723 /* AppDelegate.swift */,
+				3FDC4E512228325E009EE2F2 /* Model */,
+				3FDC4E5422283D0E009EE2F2 /* View */,
 				3FE407C52226F5A50065C723 /* ViewController */,
+				3FE407B32226F4B20065C723 /* AppDelegate.swift */,
 				3FE407B72226F4B20065C723 /* Main.storyboard */,
 				3FE407BA2226F4B40065C723 /* Assets.xcassets */,
 				3FE407BC2226F4B40065C723 /* LaunchScreen.storyboard */,
@@ -172,8 +194,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FE407B62226F4B20065C723 /* TrainerSelectViewController.swift in Sources */,
+				3FDC4E5922284D5F009EE2F2 /* PokemonService.swift in Sources */,
 				3FDC4E5022282E63009EE2F2 /* PokemonChooseViewController.swift in Sources */,
 				3FE407C72226F5C20065C723 /* TrainerPageViewController.swift in Sources */,
+				3FDC4E5622283D24009EE2F2 /* PokemonCollectionViewCell.swift in Sources */,
 				3FE407B42226F4B20065C723 /* AppDelegate.swift in Sources */,
 				3FDC4E4E22282C8D009EE2F2 /* Protocols.swift in Sources */,
 				3FDC4E5322283266009EE2F2 /* Pokemon.swift in Sources */,
