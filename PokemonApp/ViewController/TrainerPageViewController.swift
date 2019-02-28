@@ -25,6 +25,11 @@ class TrainerPageViewController: UIPageViewController {
             vc.view.tag = i
             trainerVCs.append(vc)
         }
+        // set up a VC for using photos
+        let photoVC = storyboard.instantiateViewController(withIdentifier: "TrainerSelectViewController") as! TrainerSelectViewController
+        photoVC.usePhotos = true
+        photoVC.view.tag = trainerVCs.count
+        trainerVCs.append(photoVC)
         
         self.delegate = self
         self.dataSource = self
