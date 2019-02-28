@@ -16,8 +16,11 @@ class TrainerSelectViewController: UIViewController {
     var image: UIImage!
     var usePhotos: Bool = false
     
+    var delegate: TrainerSelectDelegate!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        // do different setup, for default image or user image
         if usePhotos == false {
             self.imageView.image = image
         }
@@ -28,10 +31,12 @@ class TrainerSelectViewController: UIViewController {
     }
 
     @IBAction func buttonAction(_ sender: Any) {
+        // do different action, for continuing or taking picture
         if usePhotos == true {
             // let user choose a photo
             let picker = UIImagePickerController()
             picker.delegate = self
+            // prioritize selfies
             if UIImagePickerController.isCameraDeviceAvailable(.front) {
                 picker.sourceType = .camera
                 picker.cameraDevice = .front
@@ -46,6 +51,12 @@ class TrainerSelectViewController: UIViewController {
         
         // select this trainer & continue on with
         // your heroic pokemans adventure
+        if let im = imageView.image {
+            delegate?.didSelectTrainer(image: im)
+        } else {
+            // imageView.image is nil
+            // do stuff here, present an alert, or something
+        }
     }
     
 }
@@ -53,13 +64,18 @@ class TrainerSelectViewController: UIViewController {
 extension TrainerSelectViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // get photo from info dictionary
         guard let photo = info[.originalImage] as? UIImage else {
             return
         }
         
         imageView.image = photo
+        
+        // change button to continue
         usePhotos = false
         button.setTitle("Select Trainer", for: .normal)
+        
+        // dismiss picker
         picker.dismiss(animated: true, completion: nil)
     }
 }

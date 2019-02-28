@@ -23,12 +23,14 @@ class TrainerPageViewController: UIPageViewController {
             // additional setup for vc
             vc.image = UIImage(named: trainerNames[i])
             vc.view.tag = i
+            vc.delegate = self
             trainerVCs.append(vc)
         }
         // set up a VC for using photos
         let photoVC = storyboard.instantiateViewController(withIdentifier: "TrainerSelectViewController") as! TrainerSelectViewController
         photoVC.usePhotos = true
         photoVC.view.tag = trainerVCs.count
+        photoVC.delegate = self
         trainerVCs.append(photoVC)
         
         self.delegate = self
@@ -40,6 +42,13 @@ class TrainerPageViewController: UIPageViewController {
                                 animated: false,
                                 completion: nil)
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "continueToPokemons" {
+            let vc = segue.destination as! PokemonChooseViewController
+            vc.image = sender as? UIImage
+        }
     }
 }
 
@@ -68,10 +77,18 @@ extension TrainerPageViewController: UIPageViewControllerDataSource {
     // MARK: - PageControl functionality
     
     func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        return 1
+        return 4
     }
     func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-        return 1
+        return 0
     }
     
+}
+
+extension TrainerPageViewController: TrainerSelectDelegate {
+    func didSelectTrainer(image: UIImage) {
+        // continue on pokemon question
+        // "sender" can be anything, so we can toss the image in as a parameter
+        self.performSegue(withIdentifier: "continueToPokemons", sender: image)
+    }
 }
