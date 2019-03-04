@@ -46,8 +46,8 @@ class TrainerPageViewController: UIPageViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "continueToPokemons" {
-            let vc = segue.destination as! PokemonChooseViewController
-            vc.image = sender as? UIImage
+            let vc = segue.destination as! UITabBarController
+            (vc.viewControllers![0] as! PokemonChooseViewController).image = sender as? UIImage
         }
     }
 }

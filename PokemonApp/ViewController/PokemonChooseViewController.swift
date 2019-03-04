@@ -163,12 +163,23 @@ extension PokemonChooseViewController: UICollectionViewDataSource {
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView,
+                        willDisplay cell: UICollectionViewCell,
+                        forItemAt indexPath: IndexPath) {
+        if indexPath.row == (self.pokemons.count - 3) {
+            // download next batch of Pokemon
+            // on completion: reload CollectionView
+        }
+    }
+    
     private func setImage(cell: PokemonCollectionViewCell, pokemon: Pokemon) {
+        
         if let imageData = pokemon.image {
             let image = UIImage(data: imageData)
             cell.imageView.image = image
         }
         else {
+            
             cell.imageView.image = nil
             PokemonService.shared.downloadPicture(for: pokemon) { (pokemon) in
                 if let imageData = pokemon.image {

@@ -30,6 +30,13 @@ import Foundation
 class PokemonService {
     static let shared = PokemonService()
     private let session: URLSession
+    
+    // in-memory cache to save completed requests
+    private var requestCache = NSCache<NSString, NSData>()
+    
+    // in-memory cache to keep track of in-progress webservice calls
+    // private var inProgressCalls = Set<String>()
+    
     private init() {
         let config = URLSessionConfiguration.default
         config.allowsCellularAccess = false
@@ -50,6 +57,25 @@ class PokemonService {
     func downloadPokemon(name: String,
                          completion: @escaping (Pokemon)->()) {
         let urlString = "https://pokeapi.co/api/v2/pokemon/" + name
+       // if inProgressCalls.contains(urlString) { return }
+        
+        if let value = requestCache.object(forKey: urlString as NSString) {
+            let dat = Data(referencing: value)
+            let decoder = JSONDecoder()
+            do {
+                // make a pokemon
+                let pokemon = try decoder.decode(Pokemon.self, from: dat)
+                // self.downloadPicture(for: pokemon, completion: completion)
+                completion(pokemon)
+            }
+            catch {
+                // error, something
+                print(error)
+            }
+           // self.inProgressCalls.remove(urlString)
+            return
+        }
+        
         guard let url = URL(string: urlString) else {
             // throw an error about invalid URL
             return
@@ -60,9 +86,12 @@ class PokemonService {
         request.httpMethod = "GET"
         
         // actual downloading/uploading task
+        // inProgressCalls.insert(urlString)
         let dataTask = session.dataTask(with: request)
         { (data, response, error) in
             if let dat = data {
+                self.requestCache.setObject(NSData(data: dat),
+                                            forKey: urlString as NSString)
                 // parse the data
                 let decoder = JSONDecoder()
                 do {
@@ -76,6 +105,7 @@ class PokemonService {
                     print(error)
                 }
             }
+            // self.inProgressCalls.remove(urlString)
         }
         dataTask.resume()
         
@@ -85,25 +115,43 @@ class PokemonService {
     // it is some work that I will do
     // at an arbitrary point later
     // there is a function
-    // with input: 1 Pokemone
+    // with input: 1 Pokemon
     // and output: no output
     func downloadPicture(for pokemon: Pokemon,
                          completion: @escaping (Pokemon)->()) {
+        let urlString = pokemon.randomImageURL
+       // if inProgressCalls.contains(urlString) { return }
         
-        guard let url = URL(string: pokemon.randomImageURL) else {
+        // if the item exists in the NSCache, retrieve the item
+        if let value = requestCache.object(forKey: urlString as NSString) {
+            pokemon.image = Data(referencing: value)
+            completion(pokemon)
+            // self.inProgressCalls.remove(urlString)
+            return
+        }
+        
+        guard let url = URL(string: urlString) else {
             // error here
             return
         }
-        print(url.relativeString)
+        
+        print(url.relativeString) // will be printed only if we are fetching it from online
         
         // DataTasks require 2 parameters:
         // 1 - URL to download/upload from/to
         // 2 - work to do when done downloading/uploading
         // DataTask completion has
+        // inProgressCalls.insert(urlString)
         let dataTaskComp: (Data?, URLResponse?, Error?)->() =
         { (data, _, _) in
             pokemon.image = data
+            if let dat = data {
+                self.requestCache.setObject(NSData(data: dat),
+                                            forKey: urlString as NSString)
+            }
+            
             completion(pokemon)
+            // self.inProgressCalls.remove(urlString)
         }
         
         let dataTask = session.dataTask(with: url,
