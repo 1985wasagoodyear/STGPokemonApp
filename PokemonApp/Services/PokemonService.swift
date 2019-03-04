@@ -68,7 +68,8 @@ class PokemonService {
                 do {
                     // make a pokemon
                     let pokemon = try decoder.decode(Pokemon.self, from: dat)
-                    self.downloadPicture(for: pokemon, completion: completion)
+                    // self.downloadPicture(for: pokemon, completion: completion)
+                    completion(pokemon)
                 }
                 catch {
                     // error, something
@@ -93,7 +94,7 @@ class PokemonService {
             // error here
             return
         }
-        // print(url.relativeString)
+        print(url.relativeString)
         
         // DataTasks require 2 parameters:
         // 1 - URL to download/upload from/to

@@ -20,13 +20,12 @@ class PokemonChooseViewController: UIViewController {
     
     var image: UIImage!
     var catchCounter = 0
-    var pokemons = [Pokemon]()
+    var pokemons = [Int:Pokemon]()
     
     // MARK: - Lifecycle Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //downloadPikachus(count: 15)
         
         trainerImageView.image = image
@@ -34,19 +33,38 @@ class PokemonChooseViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        let completion: (Pokemon)->() = { (pokemon) in
-            self.pokemons.append(pokemon)
-            DispatchQueue.main.async { self.collectionView.reloadData() }
+        // group setup
+        let dispatchGroup = DispatchGroup()
+        
+        let completion: (Pokemon, Int)->() = { (pokemon, index) in
+            self.pokemons[index] = pokemon
+            dispatchGroup.leave()
         }
+        // for each Pokemon we want to download,
+        // 1. enter the group
+        // 2. and perform download task
+        let pokemons = ["charmander", "charizard",
+                        "blastoise", "snorlax",
+                        "jigglypuff", "mewtwo"]
         let service = PokemonService.shared
-        service.downloadPokemon(name: "charmander", completion: completion)
-        service.downloadPokemon(name: "charizard", completion: completion)
-        service.downloadPokemon(name: "blastoise", completion: completion)
-        service.downloadPokemon(name: "snorlax", completion: completion)
-        service.downloadPokemon(name: "jigglypuff", completion: completion)
-        service.downloadPokemon(name: "mewtwo", completion: completion)
+        for (index, pokemon) in pokemons.enumerated() {
+            dispatchGroup.enter()
+            service.downloadPokemon(name: pokemon) { (pokemon) in
+                completion(pokemon, index)
+            }
+        }
+        
+        // work to do when all downloads are completed
+        // is performed when # of leaves == # of enters
+        // a given "enter" is not necessarily paired with a "leave"
+        // * should be coded after dispatchGroup has at least 1 enter
+        dispatchGroup.notify(queue: DispatchQueue.main) {
+            self.collectionView.reloadData()
+            print("Did finish downloading Pokemon: \(self.pokemons.count)")
+        }
     }
     
+    /*
     func downloadPikachus(count: Int) {
         let completion: (Pokemon)->() = { (pokemon) in
             // add it into our pokemons
@@ -65,7 +83,7 @@ class PokemonChooseViewController: UIViewController {
                                                   completion: completion)
         }
     }
-    
+    */
     func updateLabel() {
         catchCounterLabel.text = "Pokemon Caught: " + String(catchCounter)
     }
@@ -75,10 +93,17 @@ class PokemonChooseViewController: UIViewController {
 extension PokemonChooseViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
+        
         // catch the pokemon:
         // remove pokemon from array
         let index = indexPath.row
-        pokemons.remove(at: index)
+        
+        // adjust for each index for dictionaries
+        // remove last item
+        for i in index..<(pokemons.count - 1) {
+            pokemons[i] = pokemons[i+1]
+        }
+        pokemons[pokemons.count-1] = nil
         
         // update counter
         catchCounter += 1
@@ -89,7 +114,6 @@ extension PokemonChooseViewController: UICollectionViewDelegate {
         // reload collectionView
         collectionView.reloadData()
     }
-    
 }
 
 extension PokemonChooseViewController: UICollectionViewDelegateFlowLayout {
@@ -99,7 +123,7 @@ extension PokemonChooseViewController: UICollectionViewDelegateFlowLayout {
         
         // width & height
         // CG = Core Graphics
-        if let pokemonImage = pokemons[indexPath.row].image {
+        if let pokemonImage = pokemons[indexPath.row]?.image {
             let image = UIImage(data: pokemonImage)!
             
             let size = CGSize(width: image.size.width,
@@ -123,19 +147,38 @@ extension PokemonChooseViewController: UICollectionViewDataSource {
         return pokemons.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell",
                                                       for: indexPath) as! PokemonCollectionViewCell
-        let pokemon = pokemons[indexPath.row]
+        // new change for dictionary-based storage
+        guard let pokemon = pokemons[indexPath.row] else {
+            cell.label.text = "Error"
+            cell.imageView.image = nil
+            return cell
+        }
+        
+        setImage(cell: cell, pokemon: pokemon)
+        cell.label.text = pokemon.name
+        return cell
+    }
+    
+    private func setImage(cell: PokemonCollectionViewCell, pokemon: Pokemon) {
         if let imageData = pokemon.image {
             let image = UIImage(data: imageData)
             cell.imageView.image = image
         }
         else {
             cell.imageView.image = nil
+            PokemonService.shared.downloadPicture(for: pokemon) { (pokemon) in
+                if let imageData = pokemon.image {
+                    DispatchQueue.main.async {
+                        let image = UIImage(data: imageData)
+                        cell.imageView.image = image
+                    }
+                }
+            }
         }
-        cell.label.text = pokemon.name
-        return cell
     }
     
 }
