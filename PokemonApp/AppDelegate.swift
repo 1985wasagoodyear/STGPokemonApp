@@ -16,6 +16,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        var rootVC: UIViewController! = nil
+        
+        // is there a trainer?
+        let service = CoreDataService()
+        if service.checkIfTrainerExists() {
+            // if yes, go to signed-in screen
+            rootVC = storyboard.instantiateViewController(withIdentifier: "SignedInExperience")
+        }
+        else {
+            // if not, trainer select
+            rootVC = storyboard.instantiateViewController(withIdentifier: "TrainerPageViewController")
+        }
+        
+        window?.rootViewController = rootVC
+        
+        
         return true
     }
 

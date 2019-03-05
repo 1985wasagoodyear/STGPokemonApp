@@ -13,7 +13,7 @@
         <!--Trainer Page View Controller-->
         <scene sceneID="7uo-TC-Jb7">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="JUd-CM-v7Z" customClass="TrainerPageViewController" customModule="PokemonApp" customModuleProvider="target" sceneMemberID="viewController">
+                <pageViewController storyboardIdentifier="TrainerPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="JUd-CM-v7Z" customClass="TrainerPageViewController" customModule="PokemonApp" customModuleProvider="target" sceneMemberID="viewController">
                     <connections>
                         <segue destination="L8Z-Hq-b8u" kind="showDetail" identifier="continueToPokemons" id="eqV-N3-lc5"/>
                     </connections>
@@ -255,9 +255,10 @@
         <!--Tab Bar Controller-->
         <scene sceneID="zCp-QV-UYq">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="L8Z-Hq-b8u" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="SignedInExperience" automaticallyAdjustsScrollViewInsets="NO" id="L8Z-Hq-b8u" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ITg-ih-zAT">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>

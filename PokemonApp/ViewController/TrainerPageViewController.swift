@@ -47,9 +47,11 @@ class TrainerPageViewController: UIPageViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "continueToPokemons" {
+            /*
             let vc = segue.destination as! UITabBarController
             let pokeChooseVC = vc.viewControllers![0] as! PokemonChooseViewController
             pokeChooseVC.trainer = sender as? Trainer
+             */
         }
     }
 }
@@ -92,10 +94,10 @@ extension TrainerPageViewController: TrainerSelectDelegate {
         // save the trainer into Core Data
         let name = trainerNameStrings[tag]
         PokemonService.shared.createTrainer(image.pngData()!, name)
-        let trainer = PokemonService.shared.trainer
+        // let trainer = PokemonService.shared.trainer
         
         // continue on pokemon question
         // "sender" can be anything, so we can toss the image in as a parameter
-        self.performSegue(withIdentifier: "continueToPokemons", sender: trainer)
+        self.performSegue(withIdentifier: "continueToPokemons", sender: nil)
     }
 }

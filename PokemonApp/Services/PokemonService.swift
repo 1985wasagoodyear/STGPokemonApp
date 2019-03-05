@@ -26,6 +26,7 @@
  */
 
 import Foundation
+import CoreData
 
 class PokemonService {
     static let shared = PokemonService()
@@ -182,4 +183,7 @@ extension PokemonService {
         trainer = service.createTrainer(image, name)
     }
     
+    func loadTrainer() {
+        trainer = service.loadTrainer()
+    }
 }

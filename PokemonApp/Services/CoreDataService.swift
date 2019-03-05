@@ -93,4 +93,25 @@ extension CoreDataService {
         saveContext()
         return trainer
     }
+    
+    func checkIfTrainerExists() -> Bool {
+        // let fetch = NSFetchRequest<Trainer>(entityName: "Trainer")
+        let fetch: NSFetchRequest = Trainer.fetchRequest()
+        do {
+            let results = try context.fetch(fetch)
+            return results.count > 0
+        }
+        catch {}
+        return false
+    }
+    
+    func loadTrainer() -> Trainer? {
+        let fetch: NSFetchRequest = Trainer.fetchRequest()
+        do {
+            let results = try context.fetch(fetch)
+            return results.first
+        }
+        catch {}
+        return nil
+    }
 }

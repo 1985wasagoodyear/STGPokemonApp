@@ -26,6 +26,10 @@ class PokemonChooseViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        PokemonService.shared.loadTrainer()
+        trainer = PokemonService.shared.trainer
+        
         //downloadPikachus(count: 15)
         print("Welcome to Gringas Town, " + trainer.name!)
         trainerImageView.image = UIImage(data: trainer.getImageData()!)

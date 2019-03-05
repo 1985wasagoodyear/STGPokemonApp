@@ -86,6 +86,13 @@
 			isa = PBXGroup;
 			children = (
 				3FA64BDF222ED9FE009F1192 /* Old */,
+				3FA64BF0222EDA9F009F1192 /* Pokemon+CoreDataClass.swift */,
+				3FA64BF1222EDA9F009F1192 /* Pokemon+CoreDataProperties.swift */,
+				3FA64BF8222EDFC7009F1192 /* Pokemon+SpritesUtility.swift */,
+				3FA64BEC222EDA9F009F1192 /* Sprites+CoreDataClass.swift */,
+				3FA64BED222EDA9F009F1192 /* Sprites+CoreDataProperties.swift */,
+				3FA64BEE222EDA9F009F1192 /* Trainer+CoreDataClass.swift */,
+				3FA64BEF222EDA9F009F1192 /* Trainer+CoreDataProperties.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -129,13 +136,6 @@
 				3FDC4E5722284D50009EE2F2 /* Services */,
 				3FDC4E4C22282C7C009EE2F2 /* Protocols */,
 				3FDC4E512228325E009EE2F2 /* Model */,
-				3FA64BF0222EDA9F009F1192 /* Pokemon+CoreDataClass.swift */,
-				3FA64BF1222EDA9F009F1192 /* Pokemon+CoreDataProperties.swift */,
-				3FA64BF8222EDFC7009F1192 /* Pokemon+SpritesUtility.swift */,
-				3FA64BEC222EDA9F009F1192 /* Sprites+CoreDataClass.swift */,
-				3FA64BED222EDA9F009F1192 /* Sprites+CoreDataProperties.swift */,
-				3FA64BEE222EDA9F009F1192 /* Trainer+CoreDataClass.swift */,
-				3FA64BEF222EDA9F009F1192 /* Trainer+CoreDataProperties.swift */,
 				3FDC4E5422283D0E009EE2F2 /* View */,
 				3FE407C52226F5A50065C723 /* ViewController */,
 				3FE407B32226F4B20065C723 /* AppDelegate.swift */,
