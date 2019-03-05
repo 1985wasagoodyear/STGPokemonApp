@@ -33,19 +33,11 @@ class Pokemon: Decodable {
     }
 }
 
-extension Array {
-    func doubleArray() -> Array {
-        return self + self
-    }
-}
-
 // Decorator Design Pattern:
 // add extra behavior, functionality, etc
 // to an existing object
 // without changing its source code
 extension Pokemon {
-    
-    // var newThing: String?
     
     // computed property
     var randomImageURL: String {

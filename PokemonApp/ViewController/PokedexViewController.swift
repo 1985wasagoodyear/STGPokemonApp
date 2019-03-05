@@ -108,14 +108,14 @@ extension PokedexViewController: UICollectionViewDataSource {
     }
     
     private func setImage(cell: PokemonCollectionViewCell, pokemon: Pokemon) {
-        if let imageData = pokemon.image {
+        if let imageData = pokemon.getImageData() {
             let image = UIImage(data: imageData)
             cell.imageView.image = image
         }
         else {
             cell.imageView.image = nil
             PokemonService.shared.downloadPicture(for: pokemon) { (pokemon) in
-                if let imageData = pokemon.image {
+                if let imageData = pokemon.getImageData() {
                     DispatchQueue.main.async {
                         let image = UIImage(data: imageData)
                         cell.imageView.image = image

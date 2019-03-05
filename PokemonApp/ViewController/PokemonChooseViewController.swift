@@ -18,7 +18,7 @@ class PokemonChooseViewController: UIViewController {
     
     // MARK: - Properties
     
-    var image: UIImage!
+    var trainer: Trainer!
     var catchCounter = 0
     var pokemons = [Int:Pokemon]()
     
@@ -27,8 +27,8 @@ class PokemonChooseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //downloadPikachus(count: 15)
-        
-        trainerImageView.image = image
+        print("Welcome to Gringas Town, " + trainer.name!)
+        trainerImageView.image = UIImage(data: trainer.getImageData()!)
         updateLabel()
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -123,7 +123,7 @@ extension PokemonChooseViewController: UICollectionViewDelegateFlowLayout {
         
         // width & height
         // CG = Core Graphics
-        if let pokemonImage = pokemons[indexPath.row]?.image {
+        if let pokemonImage = pokemons[indexPath.row]?.getImageData() {
             let image = UIImage(data: pokemonImage)!
             
             let size = CGSize(width: image.size.width,
@@ -174,15 +174,14 @@ extension PokemonChooseViewController: UICollectionViewDataSource {
     
     private func setImage(cell: PokemonCollectionViewCell, pokemon: Pokemon) {
         
-        if let imageData = pokemon.image {
+        if let imageData = pokemon.getImageData() {
             let image = UIImage(data: imageData)
             cell.imageView.image = image
         }
         else {
-            
             cell.imageView.image = nil
             PokemonService.shared.downloadPicture(for: pokemon) { (pokemon) in
-                if let imageData = pokemon.image {
+                if let imageData = pokemon.getImageData() {
                     DispatchQueue.main.async {
                         let image = UIImage(data: imageData)
                         cell.imageView.image = image

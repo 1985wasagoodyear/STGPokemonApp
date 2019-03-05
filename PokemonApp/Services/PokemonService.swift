@@ -30,14 +30,18 @@ import Foundation
 class PokemonService {
     static let shared = PokemonService()
     private let session: URLSession
+    private var service: CoreDataService!
+    
+    var trainer: Trainer!
     
     // in-memory cache to save completed requests
     private var requestCache = NSCache<NSString, NSData>()
     
     // in-memory cache to keep track of in-progress webservice calls
     // private var inProgressCalls = Set<String>()
-    
     private init() {
+        service = CoreDataService()
+        
         let config = URLSessionConfiguration.default
         config.allowsCellularAccess = false
         config.requestCachePolicy = .returnCacheDataElseLoad
@@ -45,6 +49,15 @@ class PokemonService {
         
         // or just
         // session = URLSession.shared
+    }
+    
+    private init(_ service: CoreDataService!) {
+        let config = URLSessionConfiguration.default
+        config.allowsCellularAccess = false
+        config.requestCachePolicy = .returnCacheDataElseLoad
+        session = URLSession.init(configuration: config)
+        
+        self.service = service
     }
     
     // completion handler:
@@ -62,6 +75,7 @@ class PokemonService {
         if let value = requestCache.object(forKey: urlString as NSString) {
             let dat = Data(referencing: value)
             let decoder = JSONDecoder()
+            decoder.userInfo[CodingUserInfoKey.context] = service.context
             do {
                 // make a pokemon
                 let pokemon = try decoder.decode(Pokemon.self, from: dat)
@@ -94,6 +108,7 @@ class PokemonService {
                                             forKey: urlString as NSString)
                 // parse the data
                 let decoder = JSONDecoder()
+                decoder.userInfo[CodingUserInfoKey.context] = self.service.context
                 do {
                     // make a pokemon
                     let pokemon = try decoder.decode(Pokemon.self, from: dat)
@@ -124,7 +139,7 @@ class PokemonService {
         
         // if the item exists in the NSCache, retrieve the item
         if let value = requestCache.object(forKey: urlString as NSString) {
-            pokemon.image = Data(referencing: value)
+            pokemon.image = value
             completion(pokemon)
             // self.inProgressCalls.remove(urlString)
             return
@@ -144,8 +159,8 @@ class PokemonService {
         // inProgressCalls.insert(urlString)
         let dataTaskComp: (Data?, URLResponse?, Error?)->() =
         { (data, _, _) in
-            pokemon.image = data
             if let dat = data {
+                pokemon.image = NSData(data: dat)
                 self.requestCache.setObject(NSData(data: dat),
                                             forKey: urlString as NSString)
             }
@@ -157,6 +172,14 @@ class PokemonService {
         let dataTask = session.dataTask(with: url,
                                         completionHandler: dataTaskComp)
         dataTask.resume()
+    }
+    
+}
+
+// All Trainer-related activity here
+extension PokemonService {
+    func createTrainer(_ image: Data, _ name: String) {
+        trainer = service.createTrainer(image, name)
     }
     
 }

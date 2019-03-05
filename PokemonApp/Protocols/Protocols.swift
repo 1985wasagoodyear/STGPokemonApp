@@ -8,5 +8,5 @@
 import UIKit
 
 protocol TrainerSelectDelegate: class {
-    func didSelectTrainer(image: UIImage)
+    func didSelectTrainer(image: UIImage, tag: Int)
 }

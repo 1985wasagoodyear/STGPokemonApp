@@ -52,7 +52,7 @@ class TrainerSelectViewController: UIViewController {
         // select this trainer & continue on with
         // your heroic pokemans adventure
         if let im = imageView.image {
-            delegate?.didSelectTrainer(image: im)
+            delegate?.didSelectTrainer(image: im, tag: self.view.tag)
         } else {
             // imageView.image is nil
             // do stuff here, present an alert, or something
