@@ -74,6 +74,8 @@ extension PokedexViewController: UICollectionViewDataSource {
         
         setImage(cell: cell, pokemon: pokemon)
         cell.label.text = pokemon.name
+        cell.delegate = self
+        cell.tag = indexPath.row
         return cell
     }
     
@@ -129,15 +131,8 @@ extension PokedexViewController: UICollectionViewDataSource {
 extension PokedexViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-        // animateCell(cell: collectionView.cellForItem(at: indexPath))
         
         collectionView.layer.add(bounceBlinkAnimation(), forKey: "asdjkahjkldas")
-    }
-    
-    func animateCell(cell myCell: UICollectionViewCell) {
-        let cell = myCell as! PokemonCollectionViewCell
-
-        cell.imageView.layer.add(bounceBlinkAnimation(), forKey: "blinkSpinWaveAnimation")
     }
     
     func bounceBlinkAnimation() -> CAAnimationGroup {
@@ -181,5 +176,21 @@ extension PokedexViewController: UICollectionViewDelegateFlowLayout {
         let height = width + 30.0
         let size = CGSize(width: width, height: height)
         return size
+    }
+}
+
+extension PokedexViewController: CapturePokemonDelegate {
+    
+    func catchPokemon(at index: Int) {
+        let indexPath = IndexPath(row: index, section: 0)
+        if let cell = collectionView.cellForItem(at: indexPath) {
+            animateCell(cell: cell)
+        }
+    }
+    
+    func animateCell(cell myCell: UICollectionViewCell) {
+        let cell = myCell as! PokemonCollectionViewCell
+        
+        cell.imageView.layer.add(bounceBlinkAnimation(), forKey: "blinkSpinWaveAnimation")
     }
 }

@@ -10,7 +10,12 @@ import UIKit
 
 class PokemonCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet var imageView: UIImageView! {
+    @IBOutlet var imageView: UIImageView!
+    @IBOutlet var label: UILabel!
+    
+    var tapGesture: UITapGestureRecognizer!
+    
+    weak var delegate: CapturePokemonDelegate! {
         didSet {
             tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector(tapGestureAction))
@@ -19,11 +24,6 @@ class PokemonCollectionViewCell: UICollectionViewCell {
             imageView.addGestureRecognizer(tapGesture)
         }
     }
-    @IBOutlet var label: UILabel!
-    
-    var tapGesture: UITapGestureRecognizer!
-    
-    weak var delegate: CapturePokemonDelegate!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
