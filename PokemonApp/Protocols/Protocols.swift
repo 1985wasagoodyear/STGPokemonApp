@@ -10,3 +10,7 @@ import UIKit
 protocol TrainerSelectDelegate: class {
     func didSelectTrainer(image: UIImage, tag: Int)
 }
+
+protocol CapturePokemonDelegate: class {
+    func catchPokemon(at index: Int)
+}

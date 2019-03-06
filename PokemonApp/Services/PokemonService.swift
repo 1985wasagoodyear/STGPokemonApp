@@ -113,7 +113,6 @@ class PokemonService {
                 do {
                     // make a pokemon
                     let pokemon = try decoder.decode(Pokemon.self, from: dat)
-                    // self.downloadPicture(for: pokemon, completion: completion)
                     completion(pokemon)
                 }
                 catch {
@@ -135,8 +134,10 @@ class PokemonService {
     // and output: no output
     func downloadPicture(for pokemon: Pokemon,
                          completion: @escaping (Pokemon)->()) {
-        let urlString = pokemon.randomImageURL
-       // if inProgressCalls.contains(urlString) { return }
+        guard let urlString = pokemon.randomImageURL else {
+            return
+        }
+        // if inProgressCalls.contains(urlString) { return }
         
         // if the item exists in the NSCache, retrieve the item
         if let value = requestCache.object(forKey: urlString as NSString) {
@@ -179,11 +180,18 @@ class PokemonService {
 
 // All Trainer-related activity here
 extension PokemonService {
-    func createTrainer(_ image: Data, _ name: String) {
-        trainer = service.createTrainer(image, name)
+    func createTrainer(_ image: Data, _ name: String,
+                       _ completion: @escaping ()->Void) {
+        service.createTrainer(image, name) { trainer in
+            self.trainer = trainer
+            completion()
+        }
     }
     
     func loadTrainer() {
         trainer = service.loadTrainer()
+    }
+    func saveTrainer() {
+        service.saveContext()
     }
 }

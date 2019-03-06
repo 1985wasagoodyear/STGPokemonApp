@@ -17,10 +17,10 @@ extension Sprites {
         return NSFetchRequest<Sprites>(entityName: "Sprites")
     }
 
-    @NSManaged public var frontShiny: String
+    @NSManaged public var frontShiny: String?
     @NSManaged public var frontFemale: String?
-    @NSManaged public var frontDefault: String
-    @NSManaged public var backDefault: String
+    @NSManaged public var frontDefault: String?
+    @NSManaged public var backDefault: String?
     @NSManaged public var pokemon: Pokemon?
 
 }

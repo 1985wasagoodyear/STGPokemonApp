@@ -21,6 +21,6 @@ extension Pokemon {
     @NSManaged public var image: NSData?
     @NSManaged public var date: NSDate?
     @NSManaged public var trainer: Trainer?
-    @NSManaged public var sprite: Sprites
+    @NSManaged public var sprite: Sprites?
 
 }

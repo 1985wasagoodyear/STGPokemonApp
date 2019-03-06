@@ -18,6 +18,12 @@ public class Pokemon: NSManagedObject, Decodable {
         case sprite = "sprites"
     }
     
+    // why does this work
+    @objc
+    private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
+    }
+    
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         guard let context = decoder.userInfo[CodingUserInfoKey.context] as? NSManagedObjectContext else {
@@ -30,6 +36,6 @@ public class Pokemon: NSManagedObject, Decodable {
         
         super.init(entity: entity, insertInto: context)
         name = try container.decodeIfPresent(String.self, forKey: .name)
-        sprite = try container.decode(Sprites.self, forKey: .sprite)
+        sprite = try container.decodeIfPresent(Sprites.self, forKey: .sprite)
     }
 }

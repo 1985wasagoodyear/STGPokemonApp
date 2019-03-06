@@ -22,6 +22,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // is there a trainer?
         let service = CoreDataService()
+        
+        deleteWildPokemon(service)
+        testDeleteTrainer(service)
+        
         if service.checkIfTrainerExists() {
             // if yes, go to signed-in screen
             rootVC = storyboard.instantiateViewController(withIdentifier: "SignedInExperience")
@@ -37,6 +41,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    func deleteWildPokemon(_ service: CoreDataService) {
+        
+        // how many pokemon are saved?
+        var num = service.printNumOfPokemon()
+        print("We have \(num)-many Pokemon saved")
+        
+        // delete all wild Pokemon
+        service.deleteAllWildPokemon()
+        
+        // how many pokemon are saved?
+        num = service.printNumOfPokemon()
+        print("We now have only \(num)-many Pokemon saved")
+    }
+    
+    func testDeleteTrainer(_ service: CoreDataService) {
+        // delete Sandra
+        // save context
+        service.deleteTrainer()
+        // check amount of all pokemon currently saved
+        print("Deleted Trainer, \(service.printNumOfPokemon()) still exist")
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

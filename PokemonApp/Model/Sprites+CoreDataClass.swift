@@ -20,6 +20,12 @@ public class Sprites: NSManagedObject, Decodable {
         case backDefault = "back_default"
     }
     
+    // why does this work
+    @objc
+    private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertInto: context)
+    }
+    
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         guard let context = decoder.userInfo[CodingUserInfoKey.context] as? NSManagedObjectContext else {
@@ -31,10 +37,11 @@ public class Sprites: NSManagedObject, Decodable {
         }
         
         super.init(entity: entity, insertInto: context)
-        frontShiny = try container.decode(String.self, forKey: .frontShiny)
+        
+        frontShiny = try container.decodeIfPresent(String.self, forKey: .frontShiny)
         frontFemale = try container.decodeIfPresent(String.self, forKey: .frontFemale)
-        frontDefault = try container.decode(String.self, forKey: .frontDefault)
-        backDefault = try container.decode(String.self, forKey: .backDefault)
+        frontDefault = try container.decodeIfPresent(String.self, forKey: .frontDefault)
+        backDefault = try container.decodeIfPresent(String.self, forKey: .backDefault)
     }
 
     

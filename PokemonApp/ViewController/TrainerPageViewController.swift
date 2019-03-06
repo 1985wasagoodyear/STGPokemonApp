@@ -93,11 +93,11 @@ extension TrainerPageViewController: TrainerSelectDelegate {
     func didSelectTrainer(image: UIImage, tag: Int) {
         // save the trainer into Core Data
         let name = trainerNameStrings[tag]
-        PokemonService.shared.createTrainer(image.pngData()!, name)
-        // let trainer = PokemonService.shared.trainer
-        
-        // continue on pokemon question
-        // "sender" can be anything, so we can toss the image in as a parameter
-        self.performSegue(withIdentifier: "continueToPokemons", sender: nil)
+        PokemonService.shared.createTrainer(image.pngData()!, name) {
+            // continue on pokemon question
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "continueToPokemons", sender: nil)
+            }
+        }
     }
 }

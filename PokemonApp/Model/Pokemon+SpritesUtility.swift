@@ -19,17 +19,17 @@ extension Pokemon {
 }
 
 extension Pokemon {
-    var randomImageURL: String {
+    var randomImageURL: String? {
         let rand = Int.random(in: 0..<4)
         switch (rand) {
         case 0:
-            return sprite.frontShiny
+            return sprite?.frontShiny
         case 1:
-            return sprite.frontFemale ?? sprite.frontDefault
+            return sprite?.frontFemale ?? sprite?.frontDefault
         case 2:
-            return sprite.frontDefault
+            return sprite?.frontDefault
         default:
-            return sprite.backDefault
+            return sprite?.backDefault
         }
     }
 }

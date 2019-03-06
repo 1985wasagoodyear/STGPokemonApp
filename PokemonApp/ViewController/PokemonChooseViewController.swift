@@ -19,7 +19,6 @@ class PokemonChooseViewController: UIViewController {
     // MARK: - Properties
     
     var trainer: Trainer!
-    var catchCounter = 0
     var pokemons = [Int:Pokemon]()
     
     // MARK: - Lifecycle Methods
@@ -29,14 +28,19 @@ class PokemonChooseViewController: UIViewController {
         
         PokemonService.shared.loadTrainer()
         trainer = PokemonService.shared.trainer
-        
-        //downloadPikachus(count: 15)
-        print("Welcome to Gringas Town, " + trainer.name!)
         trainerImageView.image = UIImage(data: trainer.getImageData()!)
-        updateLabel()
+        
         collectionView.dataSource = self
         collectionView.delegate = self
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateLabel()
+        downloadPokemon()
+    }
+    
+    func downloadPokemon() {
         // group setup
         let dispatchGroup = DispatchGroup()
         
@@ -47,14 +51,12 @@ class PokemonChooseViewController: UIViewController {
         // for each Pokemon we want to download,
         // 1. enter the group
         // 2. and perform download task
-        let pokemons = ["charmander", "charizard",
-                        "blastoise", "snorlax",
-                        "jigglypuff", "mewtwo"]
         let service = PokemonService.shared
-        for (index, pokemon) in pokemons.enumerated() {
+        for i in 0..<Int.random(in: 5...30) {
+            let pokemon = String(Int.random(in: 1...807))
             dispatchGroup.enter()
             service.downloadPokemon(name: pokemon) { (pokemon) in
-                completion(pokemon, index)
+                completion(pokemon, i)
             }
         }
         
@@ -68,28 +70,9 @@ class PokemonChooseViewController: UIViewController {
         }
     }
     
-    /*
-    func downloadPikachus(count: Int) {
-        let completion: (Pokemon)->() = { (pokemon) in
-            // add it into our pokemons
-            self.pokemons.append(pokemon)
-            
-            // dispatch work asynchronously to the main thread
-            // UIKit must be done on the main thread
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
-            // print("Did download Pokemon! Count: \(self.pokemons.count)")
-        }
-        
-        for _ in 0..<count {
-            PokemonService.shared.downloadPokemon(name: "pikachu",
-                                                  completion: completion)
-        }
-    }
-    */
     func updateLabel() {
-        catchCounterLabel.text = "Pokemon Caught: " + String(catchCounter)
+        let count = trainer.pokemon?.count ?? 0
+        catchCounterLabel.text = "Pokemon Caught: " + String(count)
     }
     
 }
@@ -98,26 +81,8 @@ extension PokemonChooseViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         
-        // catch the pokemon:
-        // remove pokemon from array
-        let index = indexPath.row
-        
-        // adjust for each index for dictionaries
-        // remove last item
-        for i in index..<(pokemons.count - 1) {
-            pokemons[i] = pokemons[i+1]
-        }
-        pokemons[pokemons.count-1] = nil
-        
-        // update counter
-        catchCounter += 1
-        
-        // update label
-        updateLabel()
-        
-        // reload collectionView
-        collectionView.reloadData()
     }
+    
 }
 
 extension PokemonChooseViewController: UICollectionViewDelegateFlowLayout {
@@ -127,13 +92,6 @@ extension PokemonChooseViewController: UICollectionViewDelegateFlowLayout {
         
         // width & height
         // CG = Core Graphics
-        if let pokemonImage = pokemons[indexPath.row]?.getImageData() {
-            let image = UIImage(data: pokemonImage)!
-            
-            let size = CGSize(width: image.size.width,
-                              height: image.size.height + 30.0)
-            return size
-        }
         let width = collectionView.frame.size.width / 3.0
         let height = width + 30.0
         let size = CGSize(width: width, height: height)
@@ -164,6 +122,8 @@ extension PokemonChooseViewController: UICollectionViewDataSource {
         
         setImage(cell: cell, pokemon: pokemon)
         cell.label.text = pokemon.name
+        cell.delegate = self
+        cell.tag = indexPath.row
         return cell
     }
     
@@ -183,7 +143,7 @@ extension PokemonChooseViewController: UICollectionViewDataSource {
             cell.imageView.image = image
         }
         else {
-            cell.imageView.image = nil
+            cell.imageView.image = UIImage(named: "wow")
             PokemonService.shared.downloadPicture(for: pokemon) { (pokemon) in
                 if let imageData = pokemon.getImageData() {
                     DispatchQueue.main.async {
@@ -194,5 +154,47 @@ extension PokemonChooseViewController: UICollectionViewDataSource {
             }
         }
     }
+}
+
+extension PokemonChooseViewController: CapturePokemonDelegate {
     
+    func catchPokemon(at index: Int) {
+        // catch the pokemon:
+        // remove pokemon from array
+        
+        // adjust for each index for dictionaries
+        // remove last item
+        let deletePokemon: (UIAlertAction)->() = { _ in
+            guard let pokemon = self.pokemons[index] else {
+                // error, bad index
+                return
+            }
+            
+            for i in index..<(self.pokemons.count - 1) {
+                self.pokemons[i] = self.pokemons[i+1]
+            }
+            self.pokemons[self.pokemons.count-1] = nil
+            pokemon.date = NSDate()
+            self.trainer.addToPokemon(pokemon)
+            PokemonService.shared.saveTrainer()
+            
+            // update label
+            self.updateLabel()
+            
+            // reload collectionView
+            self.collectionView.reloadData()
+        }
+        
+        // show an alert, asking if user wants to capture a Pokemon
+        // pressing YES will perform catch & remove from collection
+        // pressing NO dismisses the Alert
+        
+        let alert = UIAlertController(title: "A̛̱͙̪̦̩ͅr͎̮̖ḛ̟ ͢y͎ͅo̕u̶̗͍̭̗ͅ ̖̤̺s̢̰̱̤͔̟̭u̸̹̠̜͕̺̞̭r̬͉e̟͝ ͉y͇o̫̱̺͎̲̭͕u҉̜̞̺̗̞ ̱̠͓̗͚w̥̞̪͍͠i̺ͅs̙̠̺̝͈̥͖h͚̩̝̘̖ ͡t͞o҉̖͓̰̹ ̦̕c͏͙a҉͖͙͖͓pț̼u͚r̹͚̥e͏͔ ̥̀t҉̩̳͙̯ḥ̛̮͍͙i͎̣̦̮̬s̠̳ Po҉k̞̫̞e̱̬̳͍̻̙̪mó̲n̻̰̖͟", message: nil, preferredStyle: .alert)
+        
+        let yesAction = UIAlertAction(title: "YES", style: .default, handler: deletePokemon)
+        let noAction = UIAlertAction(title: "NO", style: .cancel, handler: nil)
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
