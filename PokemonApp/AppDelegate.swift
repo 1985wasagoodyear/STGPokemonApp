@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let service = CoreDataService()
         
         deleteWildPokemon(service)
-        testDeleteTrainer(service)
+        // testDeleteTrainer(service)
         
         if service.checkIfTrainerExists() {
             // if yes, go to signed-in screen
