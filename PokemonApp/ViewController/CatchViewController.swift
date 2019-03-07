@@ -43,45 +43,57 @@ class CatchViewController: UIViewController {
         group.duration = duration
         group.animations = [xanim, yanim]
         group.delegate = self
-        group.isRemovedOnCompletion = false
+        group.isRemovedOnCompletion = false // needs this as it was removed prematurely
         pokeBall.layer.add(group, forKey: "catchAnimation")
     }
 }
 
 extension CatchViewController: CAAnimationDelegate {
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        // remove animation when found & finished
         if flag && anim == pokeBall.layer.animation(forKey: "catchAnimation") {
             pokeBall.layer.removeAnimation(forKey: "catchAnimation")
-            // hide pokeball
-            pokeBall.isHidden = true
-            
-            // make pokemon spin, fade shrink
-            let group = CAAnimationGroup()
-            let duration: CGFloat = 1.5
-            group.duration = CFTimeInterval(duration)
-            let spin = BasicAnimations.spinAnimation(duration)
-            let fade = BasicAnimations.fadeAnimation(duration)
-            let shrink = BasicAnimations.scaleAnimation(duration, to: 0.0)
-            group.animations = [spin, fade, shrink]
-            group.delegate = self
-            group.isRemovedOnCompletion = false
-            pokemonImageView.layer.add(group, forKey: "shrinkPokemon")
+            makePokemonDisappear()
         }
-        else if flag && anim == pokeBall.layer.animation(forKey: "shrinkPokemon") {
+        else if flag && anim == pokemonImageView.layer.animation(forKey: "shrinkPokemon") {
+            pokemonImageView.isHidden = true
             pokeBall.layer.removeAnimation(forKey: "shrinkPokemon")
-            let deletePokemon: (UIAlertAction)->Void = { _ in
-                self.dismiss(animated: true, completion: {
-                    self.delegate?.finishCapture()
-                })
-            }
-            
-            let alert = UIAlertController(title: "You caught a Pokemon!", message: nil, preferredStyle: .alert)
-            let yesAction = UIAlertAction(title: "Awesome", style: .default, handler: deletePokemon)
-            alert.addAction(yesAction)
-            self.present(alert, animated: true, completion: nil)
+            presentCongrats()
         }
-        else if flag && anim == pokeBall.layer.animation(forKey: "catchAnimation") {
+        else if flag && anim == pokemonImageView.layer.animation(forKey: "catchAnimation") {
             pokeBall.layer.removeAnimation(forKey: "catchAnimation")
         }
+    }
+    
+    func makePokemonDisappear() {
+        // hide pokeball
+        pokeBall.isHidden = true
+        
+        // make pokemon spin, fade shrink
+        let group = CAAnimationGroup()
+        let duration: CGFloat = 1.5
+        group.duration = CFTimeInterval(duration)
+        let spin = BasicAnimations.spinAnimation(duration)
+        let fade = BasicAnimations.fadeAnimation(duration)
+        let shrink = BasicAnimations.scaleAnimation(duration, to: 0.0)
+        group.animations = [spin, fade, shrink]
+        group.delegate = self
+        group.isRemovedOnCompletion = false
+        pokemonImageView.layer.add(group, forKey: "shrinkPokemon")
+    }
+    
+    func presentCongrats() {
+        let deletePokemon: (UIAlertAction)->Void = { _ in
+            // do capturing logic before heading back as viewWillAppear causes race-condition
+            self.delegate?.finishCapture()
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        let alert = UIAlertController(title: "You caught a Pokemon!",
+                                      message: nil, preferredStyle: .alert)
+        let yesAction = UIAlertAction(title: "Awesome",
+                                      style: .default, handler: deletePokemon)
+        alert.addAction(yesAction)
+        self.present(alert, animated: true, completion: nil)
     }
 }

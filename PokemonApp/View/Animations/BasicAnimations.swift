@@ -12,7 +12,7 @@ struct BasicAnimations {
     
     static func scaleAnimation(_ duration: CGFloat,
                                to val: Double) -> CABasicAnimation {
-        let scale = CABasicAnimation(keyPath: "scale")
+        let scale = CABasicAnimation(keyPath: "transform.scale")
         scale.duration = CFTimeInterval(duration)
         scale.toValue = val
         return scale
