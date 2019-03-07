@@ -181,6 +181,8 @@ extension PokedexViewController: UICollectionViewDelegateFlowLayout {
 
 extension PokedexViewController: CapturePokemonDelegate {
     
+    func finishCapture() { }
+
     func catchPokemon(at index: Int) {
         let indexPath = IndexPath(row: index, section: 0)
         if let cell = collectionView.cellForItem(at: indexPath) {

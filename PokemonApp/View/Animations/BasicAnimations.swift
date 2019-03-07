@@ -10,6 +10,14 @@ import UIKit
 
 struct BasicAnimations {
     
+    static func scaleAnimation(_ duration: CGFloat,
+                               to val: Double) -> CABasicAnimation {
+        let scale = CABasicAnimation(keyPath: "scale")
+        scale.duration = CFTimeInterval(duration)
+        scale.toValue = val
+        return scale
+    }
+    
     static func spinAnimation(_ duration: CGFloat) -> CABasicAnimation {
         let spinA = CABasicAnimation(keyPath: "transform.rotation")
         spinA.duration = CFTimeInterval(duration)

@@ -20,6 +20,7 @@ class PokemonChooseViewController: UIViewController {
     
     var trainer: Trainer!
     var pokemons = [Int:Pokemon]()
+    var currentIndex: Int = 0
     
     // MARK: - Lifecycle Methods
     
@@ -159,42 +160,37 @@ extension PokemonChooseViewController: UICollectionViewDataSource {
 extension PokemonChooseViewController: CapturePokemonDelegate {
     
     func catchPokemon(at index: Int) {
+        currentIndex = index
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CatchViewController") as! CatchViewController
+        vc.pokemonImage = UIImage(data: pokemons[index]!.getImageData()!)
+        vc.delegate = self
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    func finishCapture() {
         // catch the pokemon:
         // remove pokemon from array
         
         // adjust for each index for dictionaries
         // remove last item
-        let deletePokemon: (UIAlertAction)->() = { _ in
-            guard let pokemon = self.pokemons[index] else {
-                // error, bad index
-                return
-            }
-            
-            for i in index..<(self.pokemons.count - 1) {
-                self.pokemons[i] = self.pokemons[i+1]
-            }
-            self.pokemons[self.pokemons.count-1] = nil
-            pokemon.date = NSDate()
-            self.trainer.addToPokemon(pokemon)
-            PokemonService.shared.saveTrainer()
-            
-            // update label
-            self.updateLabel()
-            
-            // reload collectionView
-            self.collectionView.reloadData()
+        guard let pokemon = self.pokemons[currentIndex] else {
+            // error, bad index
+            return
         }
         
-        // show an alert, asking if user wants to capture a Pokemon
-        // pressing YES will perform catch & remove from collection
-        // pressing NO dismisses the Alert
+        for i in currentIndex..<(self.pokemons.count - 1) {
+            self.pokemons[i] = self.pokemons[i+1]
+        }
+        self.pokemons[self.pokemons.count-1] = nil
+        pokemon.date = NSDate()
+        self.trainer.addToPokemon(pokemon)
+        PokemonService.shared.saveTrainer()
         
-        let alert = UIAlertController(title: "A̛̱͙̪̦̩ͅr͎̮̖ḛ̟ ͢y͎ͅo̕u̶̗͍̭̗ͅ ̖̤̺s̢̰̱̤͔̟̭u̸̹̠̜͕̺̞̭r̬͉e̟͝ ͉y͇o̫̱̺͎̲̭͕u҉̜̞̺̗̞ ̱̠͓̗͚w̥̞̪͍͠i̺ͅs̙̠̺̝͈̥͖h͚̩̝̘̖ ͡t͞o҉̖͓̰̹ ̦̕c͏͙a҉͖͙͖͓pț̼u͚r̹͚̥e͏͔ ̥̀t҉̩̳͙̯ḥ̛̮͍͙i͎̣̦̮̬s̠̳ Po҉k̞̫̞e̱̬̳͍̻̙̪mó̲n̻̰̖͟", message: nil, preferredStyle: .alert)
+        // update label
+        self.updateLabel()
         
-        let yesAction = UIAlertAction(title: "YES", style: .default, handler: deletePokemon)
-        let noAction = UIAlertAction(title: "NO", style: .cancel, handler: nil)
-        alert.addAction(yesAction)
-        alert.addAction(noAction)
-        self.present(alert, animated: true, completion: nil)
+        // reload collectionView
+        self.collectionView.reloadData()
     }
 }

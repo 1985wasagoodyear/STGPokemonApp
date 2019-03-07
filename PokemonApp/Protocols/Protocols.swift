@@ -13,4 +13,5 @@ protocol TrainerSelectDelegate: class {
 
 protocol CapturePokemonDelegate: class {
     func catchPokemon(at index: Int)
+    func finishCapture()
 }

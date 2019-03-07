@@ -176,6 +176,47 @@
             </objects>
             <point key="canvasLocation" x="988" y="-411.544227886057"/>
         </scene>
+        <!--Catch View Controller-->
+        <scene sceneID="LA7-cL-8qT">
+            <objects>
+                <viewController storyboardIdentifier="CatchViewController" id="uNQ-PN-ENu" customClass="CatchViewController" customModule="PokemonApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Tab-xN-SBd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IMb-jL-FLa">
+                                <rect key="frame" x="87.5" y="120" width="200" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="OLt-bO-aXW"/>
+                                    <constraint firstAttribute="width" secondItem="IMb-jL-FLa" secondAttribute="height" multiplier="1:1" id="gH7-jl-YDU"/>
+                                </constraints>
+                            </imageView>
+                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pokeball.png" translatesAutoresizingMaskIntoConstraints="NO" id="Rj6-cB-JOR">
+                                <rect key="frame" x="255" y="547" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Rj6-cB-JOR" secondAttribute="height" multiplier="1:1" id="IvQ-uz-Tbj"/>
+                                    <constraint firstAttribute="width" constant="100" id="XB4-4R-273"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="IMb-jL-FLa" firstAttribute="top" secondItem="Jg8-4c-Xao" secondAttribute="top" constant="100" id="IX0-v0-j0a"/>
+                            <constraint firstItem="IMb-jL-FLa" firstAttribute="centerX" secondItem="Jg8-4c-Xao" secondAttribute="centerX" id="UiR-pv-qfs"/>
+                            <constraint firstItem="Jg8-4c-Xao" firstAttribute="bottom" secondItem="Rj6-cB-JOR" secondAttribute="bottom" constant="20" id="iDV-NN-YvI"/>
+                            <constraint firstItem="Jg8-4c-Xao" firstAttribute="trailing" secondItem="Rj6-cB-JOR" secondAttribute="trailing" constant="20" id="vct-eL-HOe"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Jg8-4c-Xao"/>
+                    </view>
+                    <connections>
+                        <outlet property="pokeBall" destination="Rj6-cB-JOR" id="9Bg-Kr-XHz"/>
+                        <outlet property="pokemonImageView" destination="IMb-jL-FLa" id="ciI-Yl-PWX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UOD-dc-mut" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1717" y="-405"/>
+        </scene>
         <!--Pokedex-->
         <scene sceneID="Pv5-92-2aE">
             <objects>
@@ -349,4 +390,7 @@
             <point key="canvasLocation" x="1724" y="327"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="pokeball.png" width="137" height="137"/>
+    </resources>
 </document>

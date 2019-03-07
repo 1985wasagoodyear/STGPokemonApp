@@ -19,6 +19,8 @@
 		3FA64BF6222EDA9F009F1192 /* Pokemon+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA64BF0222EDA9F009F1192 /* Pokemon+CoreDataClass.swift */; };
 		3FA64BF7222EDA9F009F1192 /* Pokemon+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA64BF1222EDA9F009F1192 /* Pokemon+CoreDataProperties.swift */; };
 		3FA64BF9222EDFC7009F1192 /* Pokemon+SpritesUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA64BF8222EDFC7009F1192 /* Pokemon+SpritesUtility.swift */; };
+		3FAFF15222318B1600F9EBE7 /* pokeball.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FAFF15122318B1600F9EBE7 /* pokeball.png */; };
+		3FAFF15422318B6F00F9EBE7 /* CatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAFF15322318B6F00F9EBE7 /* CatchViewController.swift */; };
 		3FDC4E4E22282C8D009EE2F2 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDC4E4D22282C8D009EE2F2 /* Protocols.swift */; };
 		3FDC4E5022282E63009EE2F2 /* PokemonChooseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDC4E4F22282E63009EE2F2 /* PokemonChooseViewController.swift */; };
 		3FDC4E5622283D24009EE2F2 /* PokemonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDC4E5522283D24009EE2F2 /* PokemonCollectionViewCell.swift */; };
@@ -44,6 +46,8 @@
 		3FA64BF0222EDA9F009F1192 /* Pokemon+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pokemon+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3FA64BF1222EDA9F009F1192 /* Pokemon+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pokemon+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		3FA64BF8222EDFC7009F1192 /* Pokemon+SpritesUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pokemon+SpritesUtility.swift"; sourceTree = "<group>"; };
+		3FAFF15122318B1600F9EBE7 /* pokeball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pokeball.png; sourceTree = "<group>"; };
+		3FAFF15322318B6F00F9EBE7 /* CatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatchViewController.swift; sourceTree = "<group>"; };
 		3FDC4E4D22282C8D009EE2F2 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		3FDC4E4F22282E63009EE2F2 /* PokemonChooseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonChooseViewController.swift; sourceTree = "<group>"; };
 		3FDC4E5222283266009EE2F2 /* Pokemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pokemon.swift; sourceTree = "<group>"; };
@@ -146,6 +150,7 @@
 		3FE407B22226F4B20065C723 /* PokemonApp */ = {
 			isa = PBXGroup;
 			children = (
+				3FAFF15122318B1600F9EBE7 /* pokeball.png */,
 				3FDC4E5722284D50009EE2F2 /* Services */,
 				3FDC4E4C22282C7C009EE2F2 /* Protocols */,
 				3FDC4E512228325E009EE2F2 /* Model */,
@@ -169,6 +174,7 @@
 				3FDC4E4F22282E63009EE2F2 /* PokemonChooseViewController.swift */,
 				3F7C8C7E222D8C88005DD6C1 /* PokedexViewController.swift */,
 				3F81036E223029F200ED8172 /* PokemonPCViewController.swift */,
+				3FAFF15322318B6F00F9EBE7 /* CatchViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -232,6 +238,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FE407BE2226F4B40065C723 /* LaunchScreen.storyboard in Resources */,
+				3FAFF15222318B1600F9EBE7 /* pokeball.png in Resources */,
 				3FE407BB2226F4B40065C723 /* Assets.xcassets in Resources */,
 				3FE407B92226F4B20065C723 /* Main.storyboard in Resources */,
 			);
@@ -246,6 +253,7 @@
 			files = (
 				3FA64BF3222EDA9F009F1192 /* Sprites+CoreDataProperties.swift in Sources */,
 				3F81036F223029F200ED8172 /* PokemonPCViewController.swift in Sources */,
+				3FAFF15422318B6F00F9EBE7 /* CatchViewController.swift in Sources */,
 				3FA64BF6222EDA9F009F1192 /* Pokemon+CoreDataClass.swift in Sources */,
 				3FE407B62226F4B20065C723 /* TrainerSelectViewController.swift in Sources */,
 				3FA64BF4222EDA9F009F1192 /* Trainer+CoreDataClass.swift in Sources */,
