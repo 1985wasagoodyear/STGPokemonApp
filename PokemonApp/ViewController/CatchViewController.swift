@@ -25,7 +25,7 @@ class CatchViewController: UIViewController {
     }
     
     @objc func catchAction() {
-        let duration = 1.5
+        let duration = 0.75
         let group = CAAnimationGroup()
         
         let xanim = CAKeyframeAnimation(keyPath: "transform.translation.x")
@@ -40,8 +40,10 @@ class CatchViewController: UIViewController {
         yanim.values = [0.0, -dest2]
         yanim.keyTimes = [0.0, 1.0]
         
+        let spin = BasicAnimations.spinAnimation(CGFloat(duration))
+        
         group.duration = duration
-        group.animations = [xanim, yanim]
+        group.animations = [xanim, yanim, spin]
         group.delegate = self
         group.isRemovedOnCompletion = false // needs this as it was removed prematurely
         pokeBall.layer.add(group, forKey: "catchAnimation")
@@ -56,7 +58,6 @@ extension CatchViewController: CAAnimationDelegate {
             makePokemonDisappear()
         }
         else if flag && anim == pokemonImageView.layer.animation(forKey: "shrinkPokemon") {
-            pokemonImageView.isHidden = true
             pokeBall.layer.removeAnimation(forKey: "shrinkPokemon")
             presentCongrats()
         }
@@ -78,6 +79,7 @@ extension CatchViewController: CAAnimationDelegate {
         let shrink = BasicAnimations.scaleAnimation(duration, to: 0.0)
         group.animations = [spin, fade, shrink]
         group.delegate = self
+        group.fillMode = .forwards // ensures that pokemon disappears, for good
         group.isRemovedOnCompletion = false
         pokemonImageView.layer.add(group, forKey: "shrinkPokemon")
     }

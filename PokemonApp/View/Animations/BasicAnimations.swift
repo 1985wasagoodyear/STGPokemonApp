@@ -30,6 +30,7 @@ struct BasicAnimations {
         fadeA.duration = CFTimeInterval(duration)
         fadeA.values = [1.0, 0.0, 1.0, 0.0, 1.0]
         fadeA.keyTimes = [0.0, 0.50, 0.75, 0.90, 1.0]
+        fadeA.fillMode = .forwards // ensures on completion, the item is not visible
         return fadeA
     }
     
