@@ -170,9 +170,17 @@ extension PokedexViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var numberPerRow: CGFloat = 3.0
+        if UIDevice.current.orientation.isLandscape {
+            // show 5 on a row if it's landscape
+            numberPerRow = 5.0
+        } else {
+            // show 3 on a row if it's portrait
+            numberPerRow = 3.0
+        }
         // width & height
         // CG = Core Graphics
-        let width = collectionView.frame.size.width / 3.0
+        let width = collectionView.frame.size.width / numberPerRow
         let height = width + 30.0
         let size = CGSize(width: width, height: height)
         return size
