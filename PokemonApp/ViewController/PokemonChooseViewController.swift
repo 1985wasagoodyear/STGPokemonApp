@@ -21,6 +21,7 @@ class PokemonChooseViewController: UIViewController {
     var trainer: Trainer!
     var pokemons = [Int:Pokemon]()
     var currentIndex: Int = 0
+    private let tAnimator = PokeTransitionAnimator()
     
     // MARK: - Lifecycle Methods
     
@@ -81,7 +82,7 @@ class PokemonChooseViewController: UIViewController {
 extension PokemonChooseViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-        
+        // unused
     }
     
 }
@@ -165,6 +166,7 @@ extension PokemonChooseViewController: CapturePokemonDelegate {
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "CatchViewController") as! CatchViewController
         vc.pokemonImage = UIImage(data: pokemons[index]!.getImageData()!)
         vc.delegate = self
+        vc.transitioningDelegate = self
         self.present(vc, animated: true, completion: nil)
     }
     
@@ -193,4 +195,20 @@ extension PokemonChooseViewController: CapturePokemonDelegate {
         // reload collectionView
         self.collectionView.reloadData()
     }
+}
+
+extension PokemonChooseViewController: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forPresented presented: UIViewController,
+                             presenting: UIViewController,
+                             source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return tAnimator
+    }
+    
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return tAnimator
+    }
+
+    
 }

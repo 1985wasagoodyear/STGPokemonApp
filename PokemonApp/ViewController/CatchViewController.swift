@@ -16,12 +16,19 @@ class CatchViewController: UIViewController {
     var pokemonImage: UIImage!
     var delegate: CapturePokemonDelegate!
     var tapGesture: UITapGestureRecognizer!
+    var dismissGesture: UITapGestureRecognizer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         pokemonImageView.image = pokemonImage
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(catchAction))
         pokeBall.addGestureRecognizer(tapGesture)
+        dismissGesture = UITapGestureRecognizer(target: self, action: #selector(dismissAction))
+        view.addGestureRecognizer(dismissGesture)
+    }
+    
+    @objc func dismissAction() {
+        dismiss(animated: true, completion: nil)
     }
     
     @objc func catchAction() {
@@ -33,7 +40,7 @@ class CatchViewController: UIViewController {
         let dest = pokeBall.center.x - pokemonImageView.center.x
         xanim.values = [0.0, -dest]
         xanim.keyTimes = [0.0, 1.0]
-        
+         
         let yanim = CAKeyframeAnimation(keyPath: "transform.translation.y")
         yanim.duration = duration
         let dest2 = pokeBall.center.y - pokemonImageView.center.y

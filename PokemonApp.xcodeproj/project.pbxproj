@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F47BF52229EBE9D00EEE760 /* PokeTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F47BF51229EBE9D00EEE760 /* PokeTransitionAnimator.swift */; };
 		3F7C8C7F222D8C88005DD6C1 /* PokedexViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F7C8C7E222D8C88005DD6C1 /* PokedexViewController.swift */; };
 		3F81036F223029F200ED8172 /* PokemonPCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F81036E223029F200ED8172 /* PokemonPCViewController.swift */; };
 		3F810371223040E500ED8172 /* BasicAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F810370223040E500ED8172 /* BasicAnimations.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F47BF51229EBE9D00EEE760 /* PokeTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PokeTransitionAnimator.swift; sourceTree = "<group>"; };
 		3F7C8C7E222D8C88005DD6C1 /* PokedexViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokedexViewController.swift; sourceTree = "<group>"; };
 		3F81036E223029F200ED8172 /* PokemonPCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonPCViewController.swift; sourceTree = "<group>"; };
 		3F810370223040E500ED8172 /* BasicAnimations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAnimations.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 		3F810372223040E900ED8172 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				3F47BF51229EBE9D00EEE760 /* PokeTransitionAnimator.swift */,
 				3F810370223040E500ED8172 /* BasicAnimations.swift */,
 			);
 			path = Animations;
@@ -263,6 +266,7 @@
 				3FA64BF5222EDA9F009F1192 /* Trainer+CoreDataProperties.swift in Sources */,
 				3FDC4E5622283D24009EE2F2 /* PokemonCollectionViewCell.swift in Sources */,
 				3FA64BF9222EDFC7009F1192 /* Pokemon+SpritesUtility.swift in Sources */,
+				3F47BF52229EBE9D00EEE760 /* PokeTransitionAnimator.swift in Sources */,
 				3FE407B42226F4B20065C723 /* AppDelegate.swift in Sources */,
 				3F7C8C7F222D8C88005DD6C1 /* PokedexViewController.swift in Sources */,
 				3FDC4E4E22282C8D009EE2F2 /* Protocols.swift in Sources */,
